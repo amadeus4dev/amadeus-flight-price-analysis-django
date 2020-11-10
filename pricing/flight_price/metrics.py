@@ -6,11 +6,9 @@ class Metrics:
         self.metric = metric
 
     def construct_metrics(self):
-        metrics = {}
-        metrics['price'] = self.metric['price']['total']
-        metrics['id'] = self.metric['id']
-        metrics['min'] = self.metric['priceMetrics'][0]['amount']
-        metrics['first'] = self.metric['priceMetrics'][1]['amount']
-        metrics['median'] = self.metric['priceMetrics'][2]['amount']
-        metrics['third'] = self.metric['priceMetrics'][3]['amount']
-        metrics['max'] = self.metric['priceMetrics'][4]['amount']
+        metrics = {'min': self.metric[0]['priceMetrics'][0]['amount'],
+                   'first': self.metric[0]['priceMetrics'][1]['amount'],
+                   'median': self.metric[0]['priceMetrics'][2]['amount'],
+                   'third': self.metric[0]['priceMetrics'][3]['amount'],
+                   'max': self.metric[0]['priceMetrics'][4]['amount']}
+        return metrics

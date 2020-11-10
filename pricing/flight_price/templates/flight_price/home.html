@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <link href="{% static 'pricing/style/nouislider.min.css' %}" rel="stylesheet">
         <script src="{% static 'pricing/js/nouislider.min.js' %}"></script>
+        <script src="{% static 'pricing/js/wNumb.min.js' %}"></script>
         <link rel="stylesheet" type="text/css" href="{% static 'pricing/style/style.css' %}">
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
@@ -45,7 +46,7 @@
                             {% endfor %}
                         </ul>
                         {% endif %}
-                      <h3 class="login-heading mb-4">Amadeus Flight Booking</h3>
+                      <h3 class="login-heading mb-4">Amadeus Flight Search</h3>
                       <form action="" method="POST" id="form_id"> {% csrf_token %}
                           <div class="form-label-group">
                               <input type="text" name="Origin" id="inputOrigin"
@@ -94,6 +95,14 @@
         });
         </script>
         <script>
+        function filterPips(value, type) {
+    if (type === 0) {
+        return value < 2000 ? -1 : 0;
+    }
+    return value % 1000 ? 2 : 1;
+}
+
+var pipsSteps = document.getElementById('pips-steps');
             var slider = document.getElementById('slider-color');
             noUiSlider.create(slider, {
                 start: [400, 800],
@@ -101,8 +110,9 @@
                 connect: [true, true, true],
                 pips: {
                     mode: 'values',
-                    values: [300],
-                    density: 6
+                    values: [149.59],
+                    density: 6,
+                    format: wNumb({ decimals: 2 }),
                 },
                 range: {
                     'min': 100,
