@@ -3,9 +3,6 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <link href="{% static 'pricing/style/nouislider.min.css' %}" rel="stylesheet">
-        <script src="{% static 'pricing/js/nouislider.min.js' %}"></script>
-        <script src="{% static 'pricing/js/wNumb.min.js' %}"></script>
         <link rel="stylesheet" type="text/css" href="{% static 'pricing/style/style.css' %}">
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
@@ -28,9 +25,6 @@
     </head>
 
     <body>
-        <div id="slider-tooltips"></div>
-            <div class="pb-5 pt-3"></div>
-        <div id="slider-color"></div>
         <div class="container-fluid">
           <div class="row no-gutter">
             <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
@@ -93,37 +87,6 @@
             $("#form_id").off("submit");
             self.submit();
         });
-        </script>
-        <script>
-        function filterPips(value, type) {
-    if (type === 0) {
-        return value < 2000 ? -1 : 0;
-    }
-    return value % 1000 ? 2 : 1;
-}
-
-var pipsSteps = document.getElementById('pips-steps');
-            var slider = document.getElementById('slider-color');
-            noUiSlider.create(slider, {
-                start: [400, 800],
-                tooltips: [true, true],
-                connect: [true, true, true],
-                pips: {
-                    mode: 'values',
-                    values: [149.59],
-                    density: 6,
-                    format: wNumb({ decimals: 2 }),
-                },
-                range: {
-                    'min': 100,
-                    'max': 1000
-                }
-            });
-            var connect = slider.querySelectorAll('.noUi-connect');
-            var classes = ['c-1-color', 'c-2-color', 'c-3-color'];
-            for (var i = 0; i < connect.length; i++) {
-                connect[i].classList.add(classes[i]);
-            }
         </script>
     </body>
 </html>

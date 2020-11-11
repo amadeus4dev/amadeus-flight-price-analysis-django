@@ -14,14 +14,11 @@
 
 <h3 class="login-heading mb-4 mt-4 pl-3">{{ origin }} &#x2708 {{ destination }} <br>{{ departureDate }}
 {% if returnDate %} <span class="text-info">&#10594&#10596</span> {{ returnDate }}{% endif %}</h3>
-{{ metrics.min }}
-{{ metrics.max }}
-{{ cheapest_flight }}
 {% if tripPurpose %} <h4 class="login-heading mb-4 mt-4 pl-3">Flying for <span style="font-size: 26;color: darkred;">{{ tripPurpose }} </span> purposes</h4> {% endif %}
 
 <div class="modal-body row">
     <div class="col-md-5 offset-1">
-        <h3 class="login-heading mb-4 text-left">FLIGHT OFFERS SEARCH</h3>
+        <h4 class="login-heading mb-4 text-left">FLIGHT OFFERS</h4>
         {% for r, flight in response %}
             {% if r.0firstFlightDepartureDate %}
                 <div class="card mb-6 text-center" style="max-width: 40rem;">
@@ -56,7 +53,9 @@
     </div>
 
         <div class="col-md-5">
-        <h3 class="login-heading mb-4 text-left">PRICE ANALYSIS</h3>
+        <h4 class="login-heading mb-4 text-left">PRICE ANALYSIS</h4>
+         <p>The cheapest available flight is <span class="text-info">{{ is_good_deal }}</span></p>
+         <p>The least expensive flights usually cost between ${{ metrics.first }} - {{ metrics.third }} </p>
         <div id="slider-tooltips"></div>
             <div class="pb-5 pt-3"></div>
         <div id="slider-color"></div>
@@ -83,11 +82,14 @@
         start: [{{ metrics.first }}, {{ metrics.third }}],
         tooltips: [true, true],
         connect: [true, true, true],
+        format: wNumb({ decimals: 2,
+                        prefix: '$' }),
         pips: {
             mode: 'values',
             values: [{{ cheapest_flight }}],
             density: 6,
-            format: wNumb({ decimals: 2 }),
+            format: wNumb({ decimals: 2,
+                            prefix: '$' }),
         },
         range: {
             'min': {{ metrics.min }},
