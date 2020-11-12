@@ -12,14 +12,14 @@
 </head>
 <body>
 
-<h3 class="login-heading mb-4 mt-4 pl-3">{{ origin }} &#x2708 {{ destination }} <br>{{ departureDate }}
-{% if returnDate %} <span class="text-info">&#10594&#10596</span> {{ returnDate }}{% endif %}</h3>
-{% if tripPurpose %} <h4 class="login-heading mb-4 mt-4 pl-3">Flying for <span style="font-size: 26;color: darkred;">{{ tripPurpose }} </span> purposes</h4> {% endif %}
+<h3 class="login-heading mb-4 mt-4 pl-3">{{ origin }} &#x2708 {{ destination }} <br>{{ departure_date }}
+{% if return_date %} <span class="text-info">&#10594&#10596</span> {{ return_date }}{% endif %}</h3>
+{% if trip_purpose %} <h4 class="login-heading mb-4 mt-4 pl-3">Flying for <span style="font-size: 26;color: darkred;">{{ trip_purpose }} </span> purposes</h4> {% endif %}
 
 <div class="modal-body row">
     <div class="col-md-5 offset-1">
         <h4 class="login-heading mb-4 text-left">FLIGHT OFFERS</h4>
-        {% for r, flight in response %}
+        {% for r in flight_offers %}
             {% if r.0firstFlightDepartureDate %}
                 <div class="card mb-6 text-center" style="max-width: 40rem;">
                     <div class="nounderline card-header text-center" style="font-size: 26;color: darkred;">${{ r.price }}
@@ -51,15 +51,23 @@
             {% endif %}
         {% endfor %}
     </div>
-
         <div class="col-md-5">
-        <h4 class="login-heading mb-4 text-left">PRICE ANALYSIS</h4>
-         <p>The cheapest available flight is <span class="text-info">{{ is_good_deal }}</span></p>
-         <p>The least expensive flights usually cost between ${{ metrics.first }} - {{ metrics.third }} </p>
-        <div id="slider-tooltips"></div>
-            <div class="pb-5 pt-3"></div>
-        <div id="slider-color"></div>
-    </div>
+            <h4 class="login-heading mb-4 text-left">PRICE ANALYSIS</h4>
+            {% if metrics %}
+                 <p>The cheapest available flight is <span class="text-info">{{ is_good_deal }}</span></p>
+                 <p>The least expensive flights usually cost between ${{ metrics.first }} - {{ metrics.third }} </p>
+                <div id="slider-tooltips"></div>
+                    <div class="pb-5 pt-3"></div>
+                <div id="slider-color"></div>
+            {% else %}
+                <p>We don't have price metrics for this itinerary.</p>
+                <p>Please try other trips such us:</p>
+                <ul>
+                      <li>MAD &#x2708 &nbsp; CDG 2021-03-21</li>
+                      <li>ATH &#x2708 &nbsp; MAD 2021-02-18 ⥢⥤ 2021-02-22</li>
+                </ul>
+            {% endif %}
+        </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
