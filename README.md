@@ -1,4 +1,4 @@
-# AI Prediction APIs showcase
+# Flight Search and AI APIs showcase
 
 ## What is this?
 
