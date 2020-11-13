@@ -27,46 +27,46 @@ def flight_offers(request):
                       'departureDate': departure_date
                       }
     trip_purpose = ''
-    if return_date:
-        kwargs['returnDate'] = return_date
-        kwargs_trip_purpose = {'originLocationCode': origin,
-                               'destinationLocationCode': destination,
-                               'departureDate': departure_date,
-                               'returnDate': return_date
-                               }
+    try:
+        if return_date:
+            kwargs['returnDate'] = return_date
+            kwargs_trip_purpose = {'originLocationCode': origin,
+                                   'destinationLocationCode': destination,
+                                   'departureDate': departure_date,
+                                   'returnDate': return_date
+                                   }
 
-        trip_purpose = get_trip_purpose(request, **kwargs_trip_purpose)
-    else:
-        kwargs_metrics['oneWay'] = 'true'
+            trip_purpose = get_trip_purpose(**kwargs_trip_purpose)
+        else:
+            kwargs_metrics['oneWay'] = 'true'
 
-    if origin and destination and departure_date:
-        flight_offers = get_flight_offers(request, **kwargs)
-        metrics = get_flight_price_metrics(request, **kwargs_metrics)
-        cheapest_flight = get_cheapest_flight_price(flight_offers)
-        is_good_deal = ''
-        if metrics is not None:
-            is_good_deal = rank_cheapest_flight(cheapest_flight, metrics['first'], metrics['third'])
-            is_cheapest_flight_out_of_range(cheapest_flight, metrics)
+        if origin and destination and departure_date:
+            flight_offers = get_flight_offers(**kwargs)
+            metrics = get_flight_price_metrics(**kwargs_metrics)
+            cheapest_flight = get_cheapest_flight_price(flight_offers)
+            is_good_deal = ''
+            if metrics is not None:
+                is_good_deal = rank_cheapest_flight(cheapest_flight, metrics['first'], metrics['third'])
+                is_cheapest_flight_out_of_range(cheapest_flight, metrics)
 
-        return render(request, 'flight_price/results.html', {'flight_offers': flight_offers,
-                                                             'origin': origin,
-                                                             'destination': destination,
-                                                             'departure_date': departure_date,
-                                                             'return_date': return_date,
-                                                             'trip_purpose': trip_purpose,
-                                                             'metrics': metrics,
-                                                             'cheapest_flight': cheapest_flight,
-                                                             'is_good_deal': is_good_deal
-                                                            })
+            return render(request, 'flight_price/results.html', {'flight_offers': flight_offers,
+                                                                 'origin': origin,
+                                                                 'destination': destination,
+                                                                 'departure_date': departure_date,
+                                                                 'return_date': return_date,
+                                                                 'trip_purpose': trip_purpose,
+                                                                 'metrics': metrics,
+                                                                 'cheapest_flight': cheapest_flight,
+                                                                 'is_good_deal': is_good_deal
+                                                                })
+    except ResponseError as error:
+        messages.add_message(request, messages.ERROR, error.response.result['errors'][0]['detail'])
+        return render(request, 'flight_price/home.html', {})
     return render(request, 'flight_price/home.html', {})
 
 
-def get_flight_offers(request, **kwargs):
-    try:
-        search_flights = amadeus.shopping.flight_offers_search.get(**kwargs)
-    except ResponseError as error:
-        messages.add_message(request, messages.ERROR, error)
-        return render(request, 'flight_price/home.html', {})
+def get_flight_offers(**kwargs):
+    search_flights = amadeus.shopping.flight_offers_search.get(**kwargs)
     flight_offers = []
     for flight in search_flights.data:
         offer = Flight(flight).construct_flights()
@@ -74,22 +74,14 @@ def get_flight_offers(request, **kwargs):
     return flight_offers
 
 
-def get_flight_price_metrics(request, **kwargs_metrics):
-    try:
-        kwargs_metrics['currencyCode'] = 'USD'
-        metrics = amadeus.analytics.itinerary_price_metrics.get(**kwargs_metrics)
-        metrics_returned = Metrics(metrics.data).construct_metrics()
-    except (ValueError, ResponseError) as error:
-        messages.add_message(request, messages.ERROR, error)
-    return metrics_returned
+def get_flight_price_metrics(**kwargs_metrics):
+    kwargs_metrics['currencyCode'] = 'USD'
+    metrics = amadeus.analytics.itinerary_price_metrics.get(**kwargs_metrics)
+    return Metrics(metrics.data).construct_metrics()
 
 
-def get_trip_purpose(request, **kwargs_trip_purpose):
-    try:
-        trip_purpose = amadeus.travel.predictions.trip_purpose.get(**kwargs_trip_purpose).data
-    except ResponseError as error:
-        messages.add_message(request, messages.ERROR, error)
-        return render(request, 'flight_price/home.html', {})
+def get_trip_purpose(**kwargs_trip_purpose):
+    trip_purpose = amadeus.travel.predictions.trip_purpose.get(**kwargs_trip_purpose).data
     return trip_purpose['result']
 
 
@@ -125,7 +117,7 @@ def origin_airport_search(request):
             data = amadeus.reference_data.locations.get(keyword=request.GET.get('term', None),
                                                         subType=Location.ANY).data
         except ResponseError as error:
-            messages.add_message(request, messages.ERROR, error)
+            messages.add_message(request, messages.ERROR, error.response.result['errors'][0]['detail'])
     return HttpResponse(get_city_airport_list(data), 'application/json')
 
 
@@ -135,7 +127,7 @@ def destination_airport_search(request):
             data = amadeus.reference_data.locations.get(keyword=request.GET.get('term', None),
                                                         subType=Location.ANY).data
         except ResponseError as error:
-            messages.add_message(request, messages.ERROR, error)
+            messages.add_message(request, messages.ERROR, error.response.result['errors'][0]['detail'])
     return HttpResponse(get_city_airport_list(data), 'application/json')
 
 
