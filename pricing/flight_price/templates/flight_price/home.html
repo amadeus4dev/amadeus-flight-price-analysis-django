@@ -5,7 +5,6 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="{% static 'pricing/style/style.css' %}">
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
@@ -16,6 +15,15 @@
             $(document).ready(function () {
                 $("#inputOrigin").autocomplete({
                     source: "{% url 'origin_airport_search'%}",
+                    minLength: 1,
+                    delay: 200,
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("#inputDestination").autocomplete({
+                    source: "{% url 'destination_airport_search'%}",
                     minLength: 1,
                     delay: 200,
                 });
