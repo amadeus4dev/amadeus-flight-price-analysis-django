@@ -156,11 +156,14 @@ hr.newstyle {
 	background-color: darkgrey;
 }
 
-.c-1-color { background: #34a853;
+.bar-1-color {
+    background: #34a853;
 }
-.c-2-color { background: #fbbc04;
+.bar-2-color {
+    background: #fbbc04;
 }
-.c-3-color { background: #ea4335;
+.bar-3-color {
+    background: #ea4335;
 }
 
 .noUi-target {
