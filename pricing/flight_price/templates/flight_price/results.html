@@ -56,9 +56,8 @@
             {% if metrics %}
                  <p>The cheapest available flight is <span class="text-info">{{ is_good_deal }}</span></p>
                  <p>The least expensive flights usually cost between ${{ metrics.first }} - {{ metrics.third }} </p>
-                <div id="slider-tooltips"></div>
-                    <div class="pb-5 pt-3"></div>
-                <div id="slider-color"></div>
+                <div class="pb-5"></div>
+                <div id="range-bar"></div>
             {% else %}
                 <p>We don't have price metrics for this itinerary.</p>
                 <p>Please try other trips such us:</p>
@@ -86,7 +85,7 @@
         });
 </script>
 <script>
-    var slider = document.getElementById('slider-color');
+    var slider = document.getElementById('range-bar');
     noUiSlider.create(slider, {
         start: [{{ metrics.first }}, {{ metrics.third }}],
         tooltips: [true, true],
