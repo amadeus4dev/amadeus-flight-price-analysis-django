@@ -26,7 +26,7 @@ SECRET_KEY = 'u)1e4gake^ljj1=*-$8gxy#7&*@1fb@0-6u_*+_c@0aykmdhzf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG_VALUE', True)
 
-ALLOWED_HOSTS = ['amadeus4dev-air-price-metrics.herokuapp.com', '0.0.0.0', '127.0.0.1', 'web-production-53c0.up.railway.app']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'web-production-53c0.up.railway.app']
 
 
 # Application definition
